@@ -69,30 +69,50 @@ app.get("/", (req, res) => {
 	  }
 	});
   
-  app.post('/pay-order', async (req, res) => {
-	try {
-	  const {shippingAddress, countryi, cityi, addressi,itemsPrice,shippingPrice, totalPrice,amount, razorpayPaymentId, razorpayOrderId, razorpaySignature } =
-		req.body;
-	  const newOrder = Order({
-		isPaid: true,
-		amount: amount,
-
-		razorpay: {
-		  orderId: razorpayOrderId,
-		  paymentId: razorpayPaymentId,
-		  signature: razorpaySignature,
+	app.post('/pay-order', async (req, res) => {
+		try {
+		  const {
+			shippingAddress,
+			countryi,
+			cityi,
+			addressi,
+			itemsPrice,
+			shippingPrice,
+			totalPrice,
+			amount,
+			razorpayPaymentId,
+			razorpayOrderId,
+			razorpaySignature
+		  } = req.body;
 	  
-		},
+		  const newOrder = new Order({
+			isPaid: true,
+			amount: amount,
+			shippingAddress: shippingAddress,
+			countryi: countryi,
+			cityi: cityi,
+			addressi: addressi,
+			itemsPrice: itemsPrice,
+			shippingPrice: shippingPrice,
+			totalPrice: totalPrice,
+			razorpay: {
+			  orderId: razorpayOrderId,
+			  paymentId: razorpayPaymentId,
+			  signature: razorpaySignature
+			}
+		  });
+	  
+		  await newOrder.save();
+	  
+		  res.send({
+			msg: 'Payment was successful'
+		  });
+		} catch (error) {
+		  console.error(error);
+		  res.status(500).send(error);
+		}
 	  });
-	  await newOrder.save();
-	  res.send({
-		msg: 'Payment was successfull',
-	  });
-	} catch (error) {
-	  console.log(error);
-	  res.status(500).send(error);
-	}
-  });
+	  
   
 
   if (process.env.NODE_ENV = "production") {
