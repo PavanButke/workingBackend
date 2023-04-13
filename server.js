@@ -9,6 +9,7 @@ const orderRouter =  require("./Routes/OrderRoutes");
 const Razorpay =  require('razorpay');
 const shortid =  require('shortid');
 const Order =  require("./Models/orderModel");
+const OrderPay = require("./Models/orderForPayment")
 const cors =  require("cors");
 const mongoose =  require("mongoose");
 const bodyParser =  require('body-parser');
@@ -85,7 +86,7 @@ app.get("/", (req, res) => {
 			razorpaySignature
 		  } = req.body;
 	  
-		  const newOrder = new Order({
+		  const newOrder = new OrderPay({
 			isPaid: true,
 			amount: amount,
 			shippingAddress: shippingAddress,

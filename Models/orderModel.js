@@ -1,55 +1,56 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
-    {
-      orderItems: [
-        {
-          name: { type: String, required: false },
-          qty: { type: Number, required: false },
-          price: { type: Number, required: false },
-          product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product",
-            required: false,
-          },
+  {
+    orderItems: [
+      {
+        name: { type: String, required: true },
+        qty: { type: Number, required: true },
+        price: { type: Number, required: true },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
         },
-      ],
-      shippingAddress: {
-        name: { type: String, required: false },
-        address: { type: String, required: false },
-        city: { type: String, required: false },
-        postalCode: { type: String, required: false },
-        country: { type: String, required: false },
       },
-      paymentResult: {
-        id: String,
-        status: String,
-        update_time: String,
-        email_address: String
-      },
-      itemsPrice: { type: Number, required: false },
-      shippingPrice: { type: Number, required: false },
-      totalPrice: { type: Number, required: false },
-      user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
-      isPaid: { type: Boolean},
-      paidAt: { type: Date },
-      isDelivered: { type: Boolean, default: false },
-      deliveredAt: { type: Date },
-      amount: {type:String, required:true},
-      razorpay: {
-        orderId: {type: String , required: true},
-        paymentId: {type:String , required: true},
-        signature:  {type:String , required: true},
-      }
+    ],
+    shippingAddress: {
+      name: { type: String, required: false },
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      postalCode: { type: String, reqsuired: true },
+      country: { type: String, required: true },
     },
-    {
-      timestamps: true,
+    paymentResult: {
+      id: String,
+      status: String,
+      update_time: String,
+      email_address: String,
+    },
+
+    itemsPrice: { type: Number, required: true },
+    shippingPrice: { type: Number, required: true },
+
+    totalPrice: { type: Number, required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    isPaid: { type: Boolean, default: false },
+    paidAt: { type: Date },
+    isDelivered: { type: Boolean, default: false },
+    deliveredAt: { type: Date },
+
+    amount: Number,
+
+    razorpay: {
+      orderId: String,
+      paymentId: String,
+      signature: String,
     }
-  );
-  
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const Order = mongoose.model("Order", orderSchema);
 
 module.exports = Order;
-
-//export default Order;
